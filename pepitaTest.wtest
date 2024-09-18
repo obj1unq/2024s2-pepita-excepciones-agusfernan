@@ -1,0 +1,26 @@
+import pepita.*
+
+describe "Milena" {
+    
+    test "Ejemplo 1: puede movilizar aves" {
+        
+        milena.movilizar(4)
+        assert.equals(86, pepita.energia())
+        assert.equals(2, pepon.energia())
+    }
+
+    test "Ejemplo 2: Pepita puede volar, pero pepon no" {
+        assert.throwsException({milena.movilizar(6)})
+        // assert.throwsExceptionWithMessage(errorMessage, block) Primero va el mensaje explicito que tendria que dar, y despues el bloque que tiene la excepcion
+        assert.equals(100, pepita.energia())
+        assert.equals(30, pepon.energia())
+    }
+
+    test "Ejemplo 3: Ninguno puede volar 100km" {
+        assert.throwsException({pepita.validarVolar(100)})
+        assert.equals(100, pepita.energia())
+        assert.throwsException({pepon.validarVolar(100)})
+        assert.equals(30, pepon.energia())
+
+    }
+} 
