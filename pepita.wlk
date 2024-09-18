@@ -5,19 +5,27 @@ object pepita {
 		energia = energia + comida.energiaQueAporta()
 	}
 
-	method validarSiPuedeVolar(distancia) {
-		if (energia < 10 + distancia) {
-			self.error("La energia del ave, que es " + energia + ", es menor a la energia que gasta al volar la distancia dada.")
-		}
+	method energiaNecesaria(distancia) {
+		return 10 + distancia
+	}
+
+	method puedeVolar(distancia) {
+		return energia >= self.energiaNecesaria(distancia)
 	}
 	
 	method volar(distancia) {
-		self.validarSiPuedeVolar(distancia)
-		energia = energia - 10 - distancia
+		self.validarVolar(distancia)
+		energia = energia - self.energiaNecesaria(distancia)
 	}
 		
 	method energia() {
 		return energia
+	}
+
+		method validarVolar(distancia) {
+		if (not self.puedeVolar(distancia)) {
+			self.error("Estoy muy cansado!")
+		}
 	}
 }
 
@@ -60,15 +68,23 @@ object pepon {
 		energia += energia + comida.energiaQueAporta() / 2
 	}
 	
-	method validarSiPuedeVolar(distancia) {
-		if (energia < 20 + 2*distancia) {
-			self.error("La energia del ave, que es " + energia + ", es menor a la energia que gasta al volar la distancia dada.")
-		}
+	method energiaNecesaria(distancia) {
+		return 20 + 2*distancia
+	}
+	
+	method puedeVolar(distancia) {
+		return energia >= self.energiaNecesaria(distancia)
 	}
 
 	method volar(distancia) {
-		self.validarSiPuedeVolar(distancia) 
-		energia = energia - 20 - 2*distancia
+		self.validarVolar(distancia)
+		energia = energia - self.energiaNecesaria(distancia)
+	}
+
+	method validarVolar(distancia) {
+		if (not self.puedeVolar(distancia)) {
+			self.error("Estoy muy cansado!")
+		}
 	}
 	
 }
@@ -91,8 +107,24 @@ object roque {
 object milena {
 	const aves = #{pepita, pepon}
 
+	method agregarAve(ave) {
+		aves.add(ave)
+	}
+
 	method movilizar(distancia) {
-		aves.forEach({ave => ave.validarSiPuedeVolar(distancia)})
+		self.validarMovilizar(distancia)
 		aves.forEach({ave => ave.volar(distancia)})
+	}
+
+	// Validacion que lanza la excepcion
+	method validarMovilizar(distancia) {
+		if (not self.puedeMovilizar(distancia)) {
+			self.error("No puede movilizar a todas sus aves.")
+		}
+	}
+
+	// Consulta de si puede realizar la accion a validar
+	method puedeMovilizar(distancia) {
+		return aves.all({ave => ave.puedeVolar(distancia)})
 	}
 }

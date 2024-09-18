@@ -11,14 +11,15 @@ describe "Milena" {
 
     test "Ejemplo 2: Pepita puede volar, pero pepon no" {
         assert.throwsException({milena.movilizar(6)})
+        // assert.throwsExceptionWithMessage(errorMessage, block) Primero va el mensaje explicito que tendria que dar, y despues el bloque que tiene la excepcion
         assert.equals(100, pepita.energia())
         assert.equals(30, pepon.energia())
     }
 
     test "Ejemplo 3: Ninguno puede volar 100km" {
-        assert.throwsException({pepita.validarSiPuedeVolar(100)})
+        assert.throwsException({pepita.validarVolar(100)})
         assert.equals(100, pepita.energia())
-        assert.throwsException({pepon.validarSiPuedeVolar(100)})
+        assert.throwsException({pepon.validarVolar(100)})
         assert.equals(30, pepon.energia())
 
     }
